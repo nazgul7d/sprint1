@@ -21,7 +21,7 @@ from rest_framework import routers
 from fstr_app import views
 
 router = routers.DefaultRouter()
-router.register(r'passes', views.PassViewSet)
+router.register(r'passes', views.SubmitDataView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

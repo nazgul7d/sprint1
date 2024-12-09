@@ -1,4 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class CustomUser(AbstractUser):
+    birth_date = models.DateField(null=True, blank=True)
+    name = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
 
 class Pass(models.Model):
     beauty_title = models.CharField(max_length=255)
@@ -27,7 +33,8 @@ class Pass(models.Model):
     spring_level = models.CharField(max_length=50, blank=True)
 
     # Информация о пользователе
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='passes')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Перевал'
