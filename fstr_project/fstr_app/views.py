@@ -6,6 +6,8 @@ from .models import Pass
 from .serializers import PassSerializer
 from .database import DatabaseManager
 
+
+
 class SubmitDataView(APIView):
     def post(self, request):
         db_manager = DatabaseManager()
@@ -36,3 +38,4 @@ class SubmitDataView(APIView):
             serializer.save()
             return Response({'state': 1, 'message': 'Запись успешно обновлена'})
         return Response({'state': 0, 'message': serializer.errors})
+

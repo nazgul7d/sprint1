@@ -1,49 +1,70 @@
-# REST API for the Russian Federation of Sports Tourism 
-### Overview
+# Swagger Documentation for Russian Federation of Sports Tourism API
+### Info:
 
-This repository contains the backend for a mobile application designed to simplify the process of submitting data about mountain passes for the Russian Federation of Sports Tourism.
-The application allows users to submit detailed information about their hiking experiences, which is then verified and stored by FSTR moderators.
+**Title:** Russian Federation of Sports Tourism API
+**Version:** 1.0
+**Swagger:** Swagger file is available
 
-### Key Features
+openapi.json
+### Description:
 
-Data Submission: Users can submit detailed information about mountain passes, including coordinates, difficulty ratings, and photos.
-Data Verification: FSTR moderators can review and approve submitted data.
-Data Access: Users can view their submitted data and search for information about other passes.
-RESTful API: A well-structured REST API handles all data interactions.
+This API provides functionalities for managing mountain pass data for the Russian Federation of Sports Tourism. Users can submit information about their hiking experiences, moderators can review and approve submissions, and users can access their data or search for other passes.
 
-### Technologies Used
-Python3<br>
-Django<br>
-Django Rest Framework<br>
-Json<br>
+### Paths:
+
+1. /submitData (GET)
+
+Summary: Retrieves a list of all submitted mountain passes.
+Description: Returns a paginated list of submitted mountain passes. Moderation status and other details are included.
+Responses:
+200 (OK): A JSON array containing mountain pass objects.
+401 (Unauthorized): If the request is not authorized.
+2. /submitData (POST)
+
+Summary: Submits data for a new mountain pass.
+Description: Creates a new mountain pass entry with the provided information. User authentication is required.
+Request Body:
+Required:
+application/json: A JSON object representing the new mountain pass data. Refer to the Models section for details.
+Responses:
+201 (Created): The newly created mountain pass object with its generated ID.
+400 (Bad Request): Invalid data provided.
+401 (Unauthorized): If the request is not authorized.
+3. /submitData/{id} (GET)
+
+Summary: Retrieves details about a specific mountain pass.
+Description: Returns a single mountain pass object based on the provided ID.
+Parameters:
+Path Parameter:
+id (integer): The unique identifier of the mountain pass.
+Responses:
+200 (OK): The requested mountain pass object with all details.
+404 (Not Found): The mountain pass with the specified ID does not exist.
+4. /submitData/{id} (PATCH)
+
+Summary: Updates an existing mountain pass (if status is "new").
+Description: Allows updating specific fields of a mountain pass entry, only if its status is "new". User authentication and authorization are required.
+Parameters:
+Path Parameter:
+id (integer): The unique identifier of the mountain pass.
+Request Body:
+Required:
+application/json: A JSON object containing only the fields that need to be updated.
+Responses:
+200 (OK): The updated mountain pass object with its new details.
+400 (Bad Request): Invalid data provided or attempt to update a non-new status pass.
+401 (Unauthorized): If the request is not authorized.
+404 (Not Found): The mountain pass with the specified ID does not exist.
+5. /api/submitData/user__email=<str:email> (GET)
+
+Summary: Retrieves all submissions for a specific user.
+Description: Returns a list of mountain passes submitted by a user identified by their email address. User authentication is required.
+Parameters:
+Path Parameter:
+email (string): The email address of the user whose submissions you want to retrieve.
+### Responses:
+200 (OK): A JSON array containing mountain pass objects submitted by the user.
+401 (Unauthorized): If the request is not authorized.
+404 (Not Found): The user with the specified email address does not have any submissions.
 
 
-### API Endpoints
-
-GET /submitData/: Retrieves a list of all submitted mountain passes.<br>
-POST /submitData/: Submits data for a new mountain pass.<br>
-GET /submitData/{id}: Retrieves details about a specific mountain pass.<br>
-PATCH /submitData/{id}: Updates an existing mountain pass (if status is "new").<br>
-GET /api/submitData/user__email=<str:email>: Retrieves all submissions for a specific user.<br>
-
-### Data Structure
-
-A typical JSON payload for a mountain pass submission:
-
-```json
-JSON
-
-{
-    "id": 1,
-    "user_id": {
-        "id": 1,
-        "email": "user1@gmail.com",
-        // ...
-    },
-    "coords_id": {
-        "id": 1,
-        "latitude": "23.23423400",
-        // ...
-    },
-    // ... other fields
-}
